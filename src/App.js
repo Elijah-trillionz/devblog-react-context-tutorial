@@ -1,24 +1,33 @@
-import logo from './logo.svg';
 import './App.css';
+import './App.dark.css';
+import Header from './components/Header';
+import PostList from './components/PostList';
+import { AppContext, AppProvider } from './contexts/AppState';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <AppProvider>
+      <Header />
+      <AppContext.Consumer>
+        {({ posts, darkTheme, setDarkTheme }) => (
+          <>
+            <main className={`${darkTheme ? 'dark' : ''}`}>
+              <h3>
+                New Posts: <span>{posts.length} posts</span>
+              </h3>
+              <PostList />
+            </main>
+
+            <footer
+              onClick={() => setDarkTheme(!darkTheme)}
+              className={`${darkTheme ? 'dark' : ''}`}
+            >
+              <i className={`fas fa-${darkTheme ? 'sun' : 'moon'}`}></i>
+            </footer>
+          </>
+        )}
+      </AppContext.Consumer>
+    </AppProvider>
   );
 }
 
